@@ -30,19 +30,14 @@ more consistent, on-target result.
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 
-# Moderate temperature: some wording variety is fine for a course summary,
-# but it shouldn't drift as freely as pure creative writing would.
 llm = ChatOllama(model="llama3.2:latest", temperature=0.5)
 
-# Iteration 1 - Baseline: vague, no role, no format constraints.
-# Left deliberately underspecified to contrast with v2 below.
+# Iteration 1 - Baseline: vague, no role, no format constraints
 template_v1 = PromptTemplate.from_template(
     "Summarize the university course on {subject} for {target_audience}."
 )
 
-# Iteration 2 - Improved: ROLE -> CONTEXT -> TASK -> CONSTRAINTS -> FORMAT -> EXAMPLES.
-# Each labeled block below removes one axis of ambiguity left open by v1
-# (who is speaking, who reads it, how long, what shape the output takes).
+# Iteration 2 - Improved: ROLE -> CONTEXT -> TASK -> CONSTRAINTS -> FORMAT -> EXAMPLES
 template_v2 = PromptTemplate.from_template(
     "ROLE: You are an experienced university professor and instructional designer "
     "specialized in {subject}.\n\n"
@@ -70,15 +65,11 @@ template_v2 = PromptTemplate.from_template(
     "Target audience: {target_audience}"
 )
 
-# Dynamic variables shared by both templates; change these to regenerate
-# summaries for a different course/audience without touching the templates.
 variables = {
     "subject": "Data Structures and Algorithms",
     "target_audience": "first-year computer science students",
 }
 
-# template_v1 only references {subject}; the unused {target_audience} key
-# is simply ignored, so the same `variables` dict works for both templates.
 prompt_v1 = template_v1.invoke(variables)
 prompt_v2 = template_v2.invoke(variables)
 
@@ -88,8 +79,7 @@ print(llm.invoke(prompt_v1).content)
 print("\n--- V2 (improved) ---")
 print(llm.invoke(prompt_v2).content)
 
-# Part C - Streaming (Bonus): instead of waiting for the full v2 response,
-# print each token/chunk as soon as the model produces it.
+# Part C - Streaming (Bonus)
 print("\n--- V2 Streaming ---")
 for chunk in llm.stream(prompt_v2):
     print(chunk.content, end="", flush=True)

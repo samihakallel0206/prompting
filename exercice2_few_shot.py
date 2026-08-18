@@ -12,14 +12,8 @@ could plausibly look like Electronics or Home without an anchor example).
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 
-# Lower temperature than Ex1: classification into a fixed category list
-# should be as deterministic/consistent as possible.
 llm = ChatOllama(model="llama3.2:latest", temperature=0.3)
 
-# Few-Shot prompt: the instruction is followed by 3 worked
-# Description -> Category examples (one per category style) before the
-# real description to classify. The examples anchor both the allowed
-# output format (single category word) and the decision boundaries.
 template = PromptTemplate.from_template(
     "Classify each product description into exactly one category: "
     "Electronics, Clothing, Home, Books, Other.\n\n"
@@ -29,8 +23,6 @@ template = PromptTemplate.from_template(
     "Description: {description}\nCategory:"
 )
 
-# Product description to classify (deliberately ambiguous: could look like
-# Electronics or Home without the few-shot examples above).
 description = "Wireless noise-canceling headphones"
 prompt = template.invoke({"description": description})
 

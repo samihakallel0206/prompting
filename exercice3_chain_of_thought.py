@@ -23,16 +23,8 @@ Time to meet = 150 / 210 ~= 0.714 h ~= 42 min 51 s after 09:00
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 
-# temperature=0 -> deterministic, most-likely-token output. Reasoning tasks
-# benefit from this: we want the model to follow the guided steps
-# consistently rather than take creative shortcuts.
 llm = ChatOllama(model="llama3.2:latest", temperature=0)
 
-# Chain-of-Thought prompt: instead of asking directly for the answer, the
-# template lays out 4 explicit reasoning steps as headers. The model
-# continues the text after each header, which forces it to "show its work"
-# before committing to a final answer (see docstring above for why each
-# step matters).
 template = PromptTemplate.from_template(
     "Solve the following problem by reasoning step by step. "
     "Show each step explicitly, then give the final answer on its own line "
@@ -44,7 +36,6 @@ template = PromptTemplate.from_template(
     "Step 4 - State the final answer (exact crossing time):\n"
 )
 
-# The logic problem to solve (see docstring for the ground-truth answer: ~09:43).
 problem = (
     "A train leaves Tunis at 08:00 at 120 km/h. Another train leaves Sfax at "
     "09:00 at 90 km/h heading towards Tunis. The distance between Tunis and "
