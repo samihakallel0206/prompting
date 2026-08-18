@@ -14,9 +14,10 @@ Four small exercises demonstrating core prompting techniques (Zero-Shot, Few-Sho
 
 ## Setup
 
-1. Create and activate a virtual environment (a `.venv/` already exists in this folder — activate it, or create your own):
+1. Create and activate a virtual environment:
 
    ```powershell
+   python -m venv .venv
    .venv\Scripts\activate
    ```
 
